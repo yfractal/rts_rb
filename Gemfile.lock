@@ -1,0 +1,40 @@
+PATH
+  remote: .
+  specs:
+    rts_rb (0.1.0)
+      crystalball (~> 0.7.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    crystalball (0.7.0)
+      git
+    diff-lcs (1.5.0)
+    git (1.11.0)
+      rchardet (~> 1.8)
+    rake (13.0.6)
+    rchardet (1.8.0)
+    rspec (3.11.0)
+      rspec-core (~> 3.11.0)
+      rspec-expectations (~> 3.11.0)
+      rspec-mocks (~> 3.11.0)
+    rspec-core (3.11.0)
+      rspec-support (~> 3.11.0)
+    rspec-expectations (3.11.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.11.0)
+    rspec-mocks (3.11.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.11.0)
+    rspec-support (3.11.0)
+
+PLATFORMS
+  x86_64-darwin-19
+
+DEPENDENCIES
+  rake (~> 13.0)
+  rspec (~> 3.0)
+  rts_rb!
+
+BUNDLED WITH
+   2.2.4
