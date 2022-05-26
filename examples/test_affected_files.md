@@ -32,3 +32,11 @@ files = affected-files-in-pr
 analyzor.affected_specs(files)
 ```
 
+5. p90, p95, p99
+
+``` ruby
+analyzor.p90
+analyzor.p95
+analyzor.p99
+```
+
