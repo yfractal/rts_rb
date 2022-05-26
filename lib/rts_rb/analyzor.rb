@@ -31,10 +31,10 @@ module RtsRB
     attr_reader :file_to_node
 
     # Usage:
-    # require 'analysis'
-    # analysis = Analysis.new(file)
-    # analysis.load
-    # analysis.file_level
+    # path = "#{Dir.pwd}/tmp/"
+    # path = "#{Dir.pwd}/analysis/"
+    # analyzor = RtsRB::Analyzor.new(path)
+    # analyzor.load; analyzor.file_level
     def initialize(execuation_file)
       @execuation_file = execuation_file
     end
@@ -43,37 +43,33 @@ module RtsRB
       @loaded = Crystalball::MapStorage::YAMLStorage.load(Pathname.new(@execuation_file))
     end
 
-    def affected_specs(*files)
-      files.map { |file| @file_to_node[file]}.compact.map do |node|
-        percentage = node.parent_count / @file_to_node.keys.count.to_f * 100
-        [node.name, node.parent_count, "#{percentage}%"]
-      end
-        .sort_by { |_, count, _| - count }
+    def affected_specs(files)
+      affected_specs_count = files.map { |file| @file_to_node[file]}.compact.map { |node| node.affected_specs }.flatten.uniq.count
+
+      {
+        affected_specs_count: affected_specs_count,
+        percentage: affected_specs_count.to_f / @file_to_node.count * 100
+      }
     end
 
     def file_level
       example_group = @loaded.example_groups
       @file_to_node = {}
-      @specs = []
-      example_group.each do |spec, affected_methods|
-        spec_node = TreeNode.new(spec)
-        @specs << spec_node
+      @spec_to_node = {}
 
-        affected_methods.each do |file, _|
+      example_group.each do |spec, affected_files|
+        spec_node = TreeNode.new(spec)
+        @spec_to_node[spec] = spec_node
+
+        affected_files.each do |file|
           node = @file_to_node[file] || TreeNode.new(file, 'file')
+          node.inc_parent_count
+          node.add_affected_specs(spec_node.name)
           @file_to_node[file] = node
 
           spec_node << node
         end
       end
-
-      @specs.each do |spec_node|
-        spec_node.childreen.each do |child|
-          child.inc_parent_count
-          child.add_affected_specs(spec_node.name)
-        end
-      end
-
     end
   end
 end
