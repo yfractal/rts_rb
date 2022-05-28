@@ -19,8 +19,6 @@ module RtsRB
       t_after_detected = Time.now
       @test_time += t_after_test - t_before_test
       @coverge_time += t_after_detected - t_after_test
-      puts "[RtsRB::Strategy][call]: rv=#{rv.count}, total=#{total}, detect_cunsome=#{detect_percentage}%"
-
       example_map.push(*rv)
     end
 
